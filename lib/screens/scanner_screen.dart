@@ -28,7 +28,13 @@ class _ScannerScreenState extends State<ScannerScreen>
     controller = MobileScannerController(
       detectionSpeed: DetectionSpeed.normal,
       detectionTimeoutMs: 500,
+      autoStart: false,
     );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        controller.start();
+      }
+    });
   }
 
   @override
@@ -158,7 +164,7 @@ class _ScannerScreenState extends State<ScannerScreen>
                       }
                     }
                   },
-                  errorBuilder: (context, error, child) {
+                  errorBuilder: (context, error) {
                     return Center(
                       child: Padding(
                         padding: const EdgeInsets.all(24),

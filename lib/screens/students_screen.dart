@@ -28,14 +28,14 @@ class _StudentsScreenState extends State<StudentsScreen> {
   /// Expected columns per row: id,name,program,cohort
   /// A header row (e.g. starting with "id" or "student id") is skipped.
   Future<void> importCsv() async {
-    final result = await FilePicker.platform.pickFiles(
+    final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['csv'],
-      withData: true,
     );
-    if (result == null || result.files.single.bytes == null) return;
+    if (file == null) return;
 
-    final content = utf8.decode(result.files.single.bytes!, allowMalformed: true);
+    final bytes = await file.readAsBytes();
+    final content = utf8.decode(bytes, allowMalformed: true);
     final rows = _parseCsv(content);
 
     int imported = 0;
@@ -293,23 +293,23 @@ class _StudentsScreenState extends State<StudentsScreen> {
                         direction: DismissDirection.startToEnd,
                         onDismissed: (_) async {
                           await AttendanceService.deleteStudent(s.id);
-                          if (mounted) setState(() {});
+                          if (!mounted) return;
+                          setState(() {});
 
-                          if (mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('${s.name} deleted'),
-                                duration: const Duration(seconds: 4),
-                                action: SnackBarAction(
-                                  label: 'UNDO',
-                                  onPressed: () async {
-                                    await AttendanceService.saveStudent(s);
-                                    if (mounted) setState(() {});
-                                  },
-                                ),
+                          final messenger = ScaffoldMessenger.of(context);
+                          messenger.showSnackBar(
+                            SnackBar(
+                              content: Text('${s.name} deleted'),
+                              duration: const Duration(seconds: 4),
+                              action: SnackBarAction(
+                                label: 'UNDO',
+                                onPressed: () async {
+                                  await AttendanceService.saveStudent(s);
+                                  if (mounted) setState(() {});
+                                },
                               ),
-                            );
-                          }
+                            ),
+                          );
                         },
                         background: Container(
                           alignment: Alignment.centerLeft,
