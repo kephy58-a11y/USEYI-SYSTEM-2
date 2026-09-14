@@ -1,0 +1,30 @@
+name: useyi_monitor
+description: USEYI Monitor - QR attendance app for UPSHIFT Youth Empowerment Initiative.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.10.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  cross_file: ^0.3.5+5
+  mobile_scanner: ^7.4.1
+  qr_flutter: ^4.1.0
+  hive_ce: ^2.20.0
+  hive_ce_flutter: ^2.3.4
+  intl: ^0.20.3
+  share_plus: ^13.3.0
+  file_picker: ^12.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon/app_icon.png
