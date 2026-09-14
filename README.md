@@ -49,3 +49,11 @@ To test scanning:
 ## Release signing
 
 The first APK workflow is intentionally simple so you can get a working APK before setting up a production keystore. For Google Play or a long-term release process, create/upload an Android keystore in Codemagic and configure `android_signing` in the workflow. Keep the keystore private and keep a backup of it.
+
+
+## Codemagic Android build
+This repository is configured for an Android APK build with Codemagic. The Android platform is generated during the build, the camera permission is added safely to AndroidManifest.xml, Dart analysis is run without treating warnings/info diagnostics as fatal, and the release APK is collected from build/app/outputs/flutter-apk/.
+
+
+## Codemagic Android build
+This repository is configured for an Android release APK using the `android-apk` workflow in `codemagic.yaml`. The `test/` directory is intentionally omitted because the generated starter widget test referenced a non-existent `MyApp` class and is not required for the release APK.
