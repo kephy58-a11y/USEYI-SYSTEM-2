@@ -10,7 +10,6 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  cross_file: ^0.3.5+5
   mobile_scanner: ^7.4.1
   qr_flutter: ^4.1.0
   hive_ce: ^2.20.0
