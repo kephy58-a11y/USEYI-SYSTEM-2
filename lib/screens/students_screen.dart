@@ -148,7 +148,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
               ),
               TextField(
                 controller: program,
-                decoration: const InputDecoration(labelText: 'Program'),
+                decoration: const InputDecoration(labelText: 'Primary program (optional)', helperText: 'Students are registered once and can be used across all programs.'),
               ),
               TextField(
                 controller: cohort,
@@ -348,7 +348,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                               ),
                             ),
                             subtitle: Text(
-                              '${s.id} • ${s.program} • ${s.cohort}',
+                              '${s.id} • ${s.program.isEmpty ? 'All programs' : s.program} • ${s.cohort}',
                             ),
                             trailing: IconButton(
                               tooltip: 'Show QR',
