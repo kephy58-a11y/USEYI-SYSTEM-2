@@ -47,8 +47,12 @@ workflows:
       - name: Check Dart code
         script: flutter analyze lib --no-fatal-warnings --no-fatal-infos
 
+      - name: Generate launcher icons
+        script: dart run flutter_launcher_icons
+
       - name: Build Android release APK
-        script: flutter build apk --release
+        script: |
+          flutter build apk --release
 
     artifacts:
       - build/app/outputs/flutter-apk/*.apk

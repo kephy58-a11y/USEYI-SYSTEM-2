@@ -57,3 +57,54 @@ This repository is configured for an Android APK build with Codemagic. The Andro
 
 ## Codemagic Android build
 This repository is configured for an Android release APK using the `android-apk` workflow in `codemagic.yaml`. The `test/` directory is intentionally omitted because the generated starter widget test referenced a non-existent `MyApp` class and is not required for the release APK.
+
+## Accounts and multi-phone cloud data
+
+The account system uses Firebase Authentication (email/password) and is designed for persistent sign-in. Firestore provides the shared cloud database and offline cache. A user can sign in on another phone and access the same cloud-backed USEYI data after synchronization.
+
+### One-time Firebase setup
+
+1. Create a Firebase project and add an Android app with package name `com.upshift.useyi_monitor`.
+2. Enable **Authentication > Sign-in method > Email/Password**.
+3. Create a **Cloud Firestore** database.
+4. Create the first USEYI account from the app's **Create a new account** screen.
+5. In Codemagic, add these environment variables to the workflow (do not commit them to GitHub):
+   - `FIREBASE_API_KEY`
+   - `FIREBASE_APP_ID`
+   - `FIREBASE_MESSAGING_SENDER_ID`
+   - `FIREBASE_PROJECT_ID`
+   - `FIREBASE_STORAGE_BUCKET` (optional)
+   - `FIREBASE_AUTH_DOMAIN` (optional)
+6. The workflow passes them to Flutter using `--dart-define`.
+
+Firebase Auth keeps the signed-in session on the phone, so reopening the app does not require a new login. First-time login on a new phone needs internet. Firestore then caches data locally so the app can continue working offline and synchronize when connectivity returns.
+
+For production, configure Firestore Security Rules so users can only read/write authorized USEYI data. Do not make the Firestore database public.
+
+For the full Firebase account setup, see `FIREBASE_SETUP.md`.
+
+## USEYI Monitor V3 — Monitoring upgrade
+
+This version adds a clearer monitoring workflow:
+- Programs screen: create and manage USEYI programs.
+- Students remain registered once and can be used across all programs.
+- Activities & Outcomes: record activities, outcomes, challenges and notes.
+- Reports: choose a From/To date range and export attendance CSV.
+- Cloud sync includes students, attendance, programs and activities when a Firebase account is signed in.
+- Offline-first behavior remains available through Hive local storage.
+
+### Recommended workflow
+1. Create your USEYI programs.
+2. Register each student once.
+3. Open Attendance and scan the student's QR code.
+4. Record program activities/outcomes after sessions.
+5. Use Reports for a date range and export when needed.
+
+
+## Offline Edition
+
+USEYI Monitor Offline Edition is designed to work without internet. Student, attendance, program and activity data is stored locally on the device using Hive.
+
+The drawer includes **App Information**, where staff can read the app description and use **Share App Information** to share the app details with other people.
+
+Default offline staff PIN: **1234**. Change it from the lock icon after opening the app.
